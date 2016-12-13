@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/PokedexUI/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.1/25.0.1.iml" filepath="$PROJECT_DIR$/PokedexUI/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.1/25.0.1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PokedexUI/app/src/androidTest/androidTest.iml" filepath="$PROJECT_DIR$/PokedexUI/app/src/androidTest/androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/src/androidTest/androidTest1.iml" filepath="$PROJECT_DIR$/app/src/androidTest/androidTest1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PokedexUI/app/build/generated/source/buildConfig/androidTest/androidTest2.iml" filepath="$PROJECT_DIR$/PokedexUI/app/build/generated/source/buildConfig/androidTest/androidTest2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PokedexUI/app/build/generated/source/buildConfig/buildConfig.iml" filepath="$PROJECT_DIR$/PokedexUI/app/build/generated/source/buildConfig/buildConfig.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PokedexUI/app/build/intermediates/manifest/androidTest/debug/debug.iml" filepath="$PROJECT_DIR$/PokedexUI/app/build/intermediates/manifest/androidTest/debug/debug.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PokedexUI/app/build/intermediates/bundles/debug/instant-run/instant-run.iml" filepath="$PROJECT_DIR$/PokedexUI/app/build/intermediates/bundles/debug/instant-run/instant-run.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/src/main/main.iml" filepath="$PROJECT_DIR$/app/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PokedexUI/app/build/generated/source/r/r.iml" filepath="$PROJECT_DIR$/PokedexUI/app/build/generated/source/r/r.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/src/test/test.iml" filepath="$PROJECT_DIR$/app/src/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PokedexUI/app/src/test/test1.iml" filepath="$PROJECT_DIR$/PokedexUI/app/src/test/test1.iml" />
+    </modules>
+  </component>
+</project>
