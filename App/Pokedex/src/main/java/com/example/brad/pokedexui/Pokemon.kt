@@ -1,5 +1,6 @@
 package com.example.brad.pokedexui
 
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -22,6 +23,8 @@ class Pokemon : AppCompatActivity() {
 
         val id = this.intent.extras.get("ID").toString().toInt()
         var pokemon : me.sargunvohra.lib.pokekotlin.model.Pokemon
+        var spriteUrl : URL
+        var spriteBMP : Bitmap = BitmapFactory.decodeResource(this.baseContext.resources,R.drawable.no_image_available)
         val sprite = findViewById(R.id.pokemon_sprite) as ImageView
         val nameText = findViewById(R.id.pokemon_name) as TextView
         val favButton = findViewById(R.id.fav_button) as Button
@@ -47,14 +50,18 @@ class Pokemon : AppCompatActivity() {
 
         doAsync {
             val pokeRef = getPokemon(id)
+            println(pokeRef.sprites.frontDefault)
+            if (pokeRef.sprites.frontDefault!=null) {
+                spriteUrl = URL(pokeRef.sprites.frontDefault)
+                spriteBMP = BitmapFactory.decodeStream(spriteUrl.openConnection().inputStream)
+            }
             uiThread {
 
                 pokemon = pokeRef
                 nameText.text = pokemon.name[0].toUpperCase() + pokemon.name.substring(1)
 
-                val spriteUrl = URL(pokemon.sprites.frontDefault)
-                val bmp = BitmapFactory.decodeStream(spriteUrl.openConnection().inputStream)
-                sprite.setImageBitmap(bmp)
+
+                sprite.setImageBitmap(spriteBMP)
                 var info = "Id: " + pokemon.id.toString() + "\nHeight: " + pokemon.height.toString() +
                         "\nWeight: " + pokemon.weight.toString() + "\nTypes: "
                 for (type in pokemon.types) {

@@ -6,12 +6,16 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import me.sargunvohra.lib.pokekotlin.client.ClientConfig
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
 import org.jetbrains.anko.alignParentBottom
 import org.jetbrains.anko.alignParentRight
 import org.jetbrains.anko.db.*
 import org.jetbrains.anko.relativeLayout
 import org.jetbrains.anko.textView
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by andrei on 12/13/16.
@@ -113,8 +117,11 @@ class MyAdapter(val activity : Search) : BaseAdapter() {
     }
 
     fun getData()  {
-        val pokeApi = PokeApiClient()
-        list = pokeApi.getPokemonList(0,721).results.map { p -> PokemonRef(p.name,p.id) }
+        val rootURl = HttpUrl.parse("http://192.168.1.100:8000/api/v2/")
+        val pokeApi = PokeApiClient(clientConfig = ClientConfig(rootURl))
+        println(pokeApi.getPokemon(1).toString())
+        val pokeCount = pokeApi.getPokemonList(0,1).count
+        list = pokeApi.getPokemonList(0,pokeCount).results.map { p -> PokemonRef(p.name,p.id) }
         search = list
     }
 
