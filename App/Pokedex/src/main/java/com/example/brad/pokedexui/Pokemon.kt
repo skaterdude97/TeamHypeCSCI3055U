@@ -24,7 +24,6 @@ class Pokemon : AppCompatActivity() {
         var spriteUrl : URL
         var spriteArray: List<SpriteBMP>
         var spriteCounter: Int
-        var spriteBMP : Bitmap = BitmapFactory.decodeResource(this.baseContext.resources,R.drawable.no_image_available)
         val sprite = findViewById(R.id.pokemon_sprite) as ImageView
         val nameText = findViewById(R.id.pokemon_name) as TextView
         val favButton = findViewById(R.id.fav_button) as Button
@@ -68,14 +67,13 @@ class Pokemon : AppCompatActivity() {
                         BitmapFactory.decodeResource(baseContext.resources,
                                 R.drawable.no_image_available)))
             }
-            spriteBMP = spriteArray[0].bitmap
             uiThread {
 
                 pokemon = pokeRef
                 nameText.text = pokemon.name[0].toUpperCase() + pokemon.name.substring(1)
 
 
-                sprite.setImageBitmap(spriteBMP)
+                displaySprite(sprite, spriteArray[spriteCounter], false)
                 var info = "Id: " + pokemon.id.toString() + "\nHeight: " + pokemon.height.toString() +
                         "\nWeight: " + pokemon.weight.toString() + "\nTypes: "
                 for (type in pokemon.types) {
@@ -103,8 +101,7 @@ class Pokemon : AppCompatActivity() {
                             spriteCounter = 0
                         }
                     }
-                    sprite.setImageBitmap(spriteArray[spriteCounter].bitmap)
-                    toast(spriteArray[spriteCounter].name)
+                    displaySprite(sprite,spriteArray[spriteCounter])
                 }
             }
         }
@@ -118,6 +115,13 @@ class Pokemon : AppCompatActivity() {
     fun getPokemon(id : Int) : me.sargunvohra.lib.pokekotlin.model.Pokemon {
         val pokeApi = PokeApiClient()
         return pokeApi.getPokemon(id)
+    }
+
+    fun displaySprite(imageView: ImageView, spriteBMP: SpriteBMP, doToast : Boolean = true) {
+        imageView.setImageBitmap(spriteBMP.bitmap)
+        if (doToast) {
+            toast(spriteBMP.name)
+        }
     }
 }
 
