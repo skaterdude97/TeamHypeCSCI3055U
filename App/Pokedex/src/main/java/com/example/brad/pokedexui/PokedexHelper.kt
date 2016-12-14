@@ -2,6 +2,7 @@ package com.example.brad.pokedexui
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.graphics.Bitmap
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import org.jetbrains.anko.alignParentRight
 import org.jetbrains.anko.db.*
 import org.jetbrains.anko.relativeLayout
 import org.jetbrains.anko.textView
+import java.net.URL
 import java.util.concurrent.TimeUnit
 
 /**
@@ -128,3 +130,5 @@ class MyAdapter(val activity : Search) : BaseAdapter() {
 }
 
 data class PokemonRef (val name: String, val id: Int)
+data class SpriteBMP (val name : String, var bitmap: Bitmap)
+data class SpriteURL (val name : String, val url : String?)

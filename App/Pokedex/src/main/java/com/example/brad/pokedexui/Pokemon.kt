@@ -8,12 +8,9 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import me.sargunvohra.lib.pokekotlin.client.PokeApiClient
+import org.jetbrains.anko.*
 import java.net.URL
 import org.jetbrains.anko.db.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.onClick
-import org.jetbrains.anko.toast
-import org.jetbrains.anko.uiThread
 import java.util.*
 
 class Pokemon : AppCompatActivity() {
@@ -25,7 +22,7 @@ class Pokemon : AppCompatActivity() {
         val id = this.intent.extras.get("ID").toString().toInt()
         var pokemon : me.sargunvohra.lib.pokekotlin.model.Pokemon
         var spriteUrl : URL
-        var spriteArray: List<String?>
+        var spriteArray: List<SpriteBMP>
         var spriteCounter: Int
         var spriteBMP : Bitmap = BitmapFactory.decodeResource(this.baseContext.resources,R.drawable.no_image_available)
         val sprite = findViewById(R.id.pokemon_sprite) as ImageView
@@ -53,16 +50,25 @@ class Pokemon : AppCompatActivity() {
 
         doAsync {
             val pokeRef = getPokemon(id)
-            spriteArray = arrayOf(pokeRef.sprites.frontDefault, pokeRef.sprites.backDefault,
-                    pokeRef.sprites.frontFemale, pokeRef.sprites.backFemale,
-                    pokeRef.sprites.frontShiny, pokeRef.sprites.backShiny,
-                    pokeRef.sprites.frontShinyFemale, pokeRef.sprites.backShinyFemale).
-                    filter{ sprite -> sprite!=null }
+            spriteArray = arrayOf(SpriteURL("Front Default", pokeRef.sprites.frontDefault),
+                    SpriteURL("Back Default", pokeRef.sprites.backDefault),
+                    SpriteURL("Front Female", pokeRef.sprites.frontFemale),
+                    SpriteURL("Back Female", pokeRef.sprites.backFemale),
+                    SpriteURL("Front Shiny",pokeRef.sprites.frontShiny),
+                    SpriteURL("Back Shiny", pokeRef.sprites.backShiny),
+                    SpriteURL("Front Shiny Female", pokeRef.sprites.frontShinyFemale),
+                    SpriteURL("Back Shiny Female", pokeRef.sprites.backShinyFemale)).
+                    filter { s -> s.url!=null }.
+                    map { s -> SpriteBMP(s.name, BitmapFactory.decodeStream(
+                            URL(s.url).openStream())) }
+
             spriteCounter = 0
-            if (spriteArray.isNotEmpty()) {
-                spriteUrl = URL(spriteArray[spriteCounter])
-                spriteBMP = BitmapFactory.decodeStream(spriteUrl.openConnection().inputStream)
+            if (spriteArray.isEmpty()){
+                spriteArray = listOf(SpriteBMP("No Image Found",
+                        BitmapFactory.decodeResource(baseContext.resources,
+                                R.drawable.no_image_available)))
             }
+            spriteBMP = spriteArray[0].bitmap
             uiThread {
 
                 pokemon = pokeRef
@@ -96,13 +102,9 @@ class Pokemon : AppCompatActivity() {
                         } else {
                             spriteCounter = 0
                         }
-                        doAsync { spriteBMP = BitmapFactory.decodeStream(URL(
-                                spriteArray[spriteCounter]).openConnection().inputStream)
-                            uiThread {
-                                sprite.setImageBitmap(spriteBMP)
-                            }
-                        }
                     }
+                    sprite.setImageBitmap(spriteArray[spriteCounter].bitmap)
+                    toast(spriteArray[spriteCounter].name)
                 }
             }
         }
