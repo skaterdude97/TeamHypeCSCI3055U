@@ -14,6 +14,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
+import java.util.*
 
 class Pokemon : AppCompatActivity() {
 
@@ -24,6 +25,8 @@ class Pokemon : AppCompatActivity() {
         val id = this.intent.extras.get("ID").toString().toInt()
         var pokemon : me.sargunvohra.lib.pokekotlin.model.Pokemon
         var spriteUrl : URL
+        var spriteArray: List<String?>
+        var spriteCounter: Int
         var spriteBMP : Bitmap = BitmapFactory.decodeResource(this.baseContext.resources,R.drawable.no_image_available)
         val sprite = findViewById(R.id.pokemon_sprite) as ImageView
         val nameText = findViewById(R.id.pokemon_name) as TextView
@@ -50,9 +53,14 @@ class Pokemon : AppCompatActivity() {
 
         doAsync {
             val pokeRef = getPokemon(id)
-            println(pokeRef.sprites.frontDefault)
-            if (pokeRef.sprites.frontDefault!=null) {
-                spriteUrl = URL(pokeRef.sprites.frontDefault)
+            spriteArray = arrayOf(pokeRef.sprites.frontDefault, pokeRef.sprites.backDefault,
+                    pokeRef.sprites.frontFemale, pokeRef.sprites.backFemale,
+                    pokeRef.sprites.frontShiny, pokeRef.sprites.backShiny,
+                    pokeRef.sprites.frontShinyFemale, pokeRef.sprites.backShinyFemale).
+                    filter{ sprite -> sprite!=null }
+            spriteCounter = 0
+            if (spriteArray.isNotEmpty()) {
+                spriteUrl = URL(spriteArray[spriteCounter])
                 spriteBMP = BitmapFactory.decodeStream(spriteUrl.openConnection().inputStream)
             }
             uiThread {
@@ -80,8 +88,26 @@ class Pokemon : AppCompatActivity() {
                         isFav = false
                     }
                 }
+
+                sprite.onClick {
+                    if (spriteArray.size > 1){
+                        if (spriteCounter < spriteArray.size-1) {
+                            spriteCounter++
+                        } else {
+                            spriteCounter = 0
+                        }
+                        doAsync { spriteBMP = BitmapFactory.decodeStream(URL(
+                                spriteArray[spriteCounter]).openConnection().inputStream)
+                            uiThread {
+                                sprite.setImageBitmap(spriteBMP)
+                            }
+                        }
+                    }
+                }
             }
         }
+
+
 
 
 
